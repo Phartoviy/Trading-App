@@ -20,10 +20,11 @@ public:
     ~Manager();
 private slots:
     void balanceSlot();
+    void buySlot();
 private:
     Ui::Manager *ui;
     bool flagBalance = false;
-    money balance = 0;
+    money balance = 1000;
 };
 
 #endif // MANAGER_H

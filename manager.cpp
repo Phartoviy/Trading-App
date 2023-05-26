@@ -15,8 +15,8 @@ Manager::Manager(QWidget *parent)
     ui->pushButton->setFlat(true);
     ui->pushButton->setText("Balance*");
 
-    ui->tableWidget->setRowCount(30);
-
+    ui->tableWidget->setRowCount(40);
+    ui->tableWidget_2->setRowCount(40);
     ui->nameLabel->setText("Name: Pavel Dv.");
 
 
@@ -45,7 +45,7 @@ Manager::Manager(QWidget *parent)
 
     }
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(balanceSlot()));
-
+    connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(buySlot()));
 }
 
 Manager::~Manager()
@@ -61,5 +61,15 @@ void Manager::balanceSlot()
         ui->pushButton->setText(QString::number(balance));
     else
         ui->pushButton->setText("Balance*");
+}
+
+void Manager::buySlot()
+{
+    if (balance > ui->tableWidget->item(ui->tableWidget->currentRow(),1)->text().toInt())
+    {
+        balance = balance - ui->tableWidget->item(ui->tableWidget->currentRow(),1)->text().toInt();
+        if (flagBalance)
+            ui->pushButton->setText(QString::number(balance));
+    }
 }
 
