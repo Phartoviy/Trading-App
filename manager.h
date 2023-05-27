@@ -18,13 +18,21 @@ class Manager : public QMainWindow
 public:
     Manager(QWidget *parent = nullptr);
     ~Manager();
+    int findItem(QString title);
 private slots:
     void balanceSlot();
     void buySlot();
+    void addActive();
+
 private:
     Ui::Manager *ui;
     bool flagBalance = false;
     money balance = 1000;
+    QString currentTitle;
+    int currentDividend,currentQuantity;
+    money currentPrice;
+    int currentRow = 0;
+
 };
 
 #endif // MANAGER_H

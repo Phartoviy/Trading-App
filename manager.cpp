@@ -1,5 +1,4 @@
-﻿
-#include "manager.h"
+﻿#include "manager.h"
 #include "./ui_manager.h"
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
@@ -44,6 +43,10 @@ Manager::Manager(QWidget *parent)
         }
 
     }
+    for (int i = 0;i<ui->tableWidget_2->rowCount();i++)
+    {
+        ui->tableWidget_2->setItem(i,0,new QTableWidgetItem("0"));
+    }
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(balanceSlot()));
     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(buySlot()));
 }
@@ -51,6 +54,18 @@ Manager::Manager(QWidget *parent)
 Manager::~Manager()
 {
     delete ui;
+}
+
+int Manager::findItem(QString title)
+{
+    qDebug() << "find";
+    for (int i = 0;i<ui->tableWidget_2->rowCount();i++)
+    {
+        if (title == ui->tableWidget_2->item(i,0)->text())
+            return i;
+    }
+    return -1;
+
 }
 
 
@@ -65,11 +80,42 @@ void Manager::balanceSlot()
 
 void Manager::buySlot()
 {
-    if (balance > ui->tableWidget->item(ui->tableWidget->currentRow(),1)->text().toInt())
+    currentTitle = ui->tableWidget->item(ui->tableWidget->currentRow(),0)->text();
+    currentPrice = ui->tableWidget->item(ui->tableWidget->currentRow(),1)->text().toInt();
+    currentDividend = ui->tableWidget->item(ui->tableWidget->currentRow(),2)->text().toInt();
+    currentQuantity = ui->tableWidget->item(ui->tableWidget->currentRow(),3)->text().toInt();
+    if (balance > currentPrice)
     {
-        balance = balance - ui->tableWidget->item(ui->tableWidget->currentRow(),1)->text().toInt();
+        balance = balance - currentPrice;
         if (flagBalance)
             ui->pushButton->setText(QString::number(balance));
     }
+
+    addActive();
+}
+
+void Manager::addActive()
+{
+    qDebug() << "add";
+    int row = findItem(currentTitle);
+    qDebug() << row;
+
+    if (row >= 0)
+    {
+        qDebug() << "add";
+        int quantity = ui->tableWidget_2->item(row,3)->text().toInt();
+        ui->tableWidget_2->setItem(row,3,new QTableWidgetItem(QString::number(quantity+1)));
+
+    }
+    else
+    {
+        qDebug() << "new";
+        ui->tableWidget_2->setItem(currentRow,0,new QTableWidgetItem(currentTitle));
+        ui->tableWidget_2->setItem(currentRow,1,new QTableWidgetItem(QString::number(currentPrice)));
+        ui->tableWidget_2->setItem(currentRow,2,new QTableWidgetItem(QString::number(currentDividend)));
+        ui->tableWidget_2->setItem(currentRow++,3,new QTableWidgetItem(QString::number(1)));
+
+    }
+
 }
 
