@@ -49,6 +49,7 @@ Manager::Manager(QWidget *parent)
     }
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(balanceSlot()));
     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(buySlot()));
+    connect(ui->pushButton_3,SIGNAL(clicked()),this,SLOT(saleSlot()));
 }
 
 Manager::~Manager()
@@ -58,7 +59,6 @@ Manager::~Manager()
 
 int Manager::findItem(QString title)
 {
-    qDebug() << "find";
     for (int i = 0;i<ui->tableWidget_2->rowCount();i++)
     {
         if (title == ui->tableWidget_2->item(i,0)->text())
@@ -96,26 +96,41 @@ void Manager::buySlot()
 
 void Manager::addActive()
 {
-    qDebug() << "add";
     int row = findItem(currentTitle);
     qDebug() << row;
 
     if (row >= 0)
     {
-        qDebug() << "add";
         int quantity = ui->tableWidget_2->item(row,3)->text().toInt();
         ui->tableWidget_2->setItem(row,3,new QTableWidgetItem(QString::number(quantity+1)));
 
     }
     else
     {
-        qDebug() << "new";
         ui->tableWidget_2->setItem(currentRow,0,new QTableWidgetItem(currentTitle));
         ui->tableWidget_2->setItem(currentRow,1,new QTableWidgetItem(QString::number(currentPrice)));
         ui->tableWidget_2->setItem(currentRow,2,new QTableWidgetItem(QString::number(currentDividend)));
         ui->tableWidget_2->setItem(currentRow++,3,new QTableWidgetItem(QString::number(1)));
 
     }
+
+}
+
+void Manager::saleSlot()
+{
+
+}
+
+
+
+void Manager::on_tableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) //slot magazine
+{
+    qDebug() << "currentChange";
+}
+
+
+void Manager::on_tableWidget_2_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous)// slot active
+{
 
 }
 

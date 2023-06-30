@@ -3,7 +3,7 @@
 #define MANAGER_H
 
 #include <QMainWindow>
-
+#include <QTableWidgetItem>
 typedef int money;
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +23,12 @@ private slots:
     void balanceSlot();
     void buySlot();
     void addActive();
+    void saleSlot();
+
+
+    void on_tableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+
+    void on_tableWidget_2_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 
 private:
     Ui::Manager *ui;
